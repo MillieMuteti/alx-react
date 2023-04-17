@@ -1,0 +1,16 @@
+#count {
+    font-weight: bold;
+    display: inline;
+}
+
+button {
+    display: flex;
+    align-items: center;
+}
+
+#logo {
+    width: 200px;
+    height: 200px;
+    background: url(../assets/logo.png) no-repeat;
+    background-size: cover;
+}
