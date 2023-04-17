@@ -1,6 +1,6 @@
 #count {
     font-weight: bold;
-    margin-left: 10px;
+    display: inline;
 }
 
 button {
@@ -11,6 +11,6 @@ button {
 #logo {
     width: 200px;
     height: 200px;
-    background: url(../assets/holberton-logo.jpg) no-repeat;
+    background: url(../assets/logo.png) no-repeat;
     background-size: cover;
 }
