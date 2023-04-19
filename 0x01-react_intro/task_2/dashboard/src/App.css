@@ -1,8 +1,15 @@
+.App {
+  padding: 1rem;
+  font-size: 1.5rem;
+}
 .App-header {
   display: flex;
   align-items: center;
+  flex-direction: row;
   border-bottom: 3px solid #E0354B;
   margin-bottom: 60px;
+  top: 190px;
+  position: relative;
 }
 
 .App-header img {
@@ -15,14 +22,16 @@
 }
 
 .App-body{
-  font-size: 1.1rem;
-  width: 100%;
-  padding-left: 30px
+  position: relative;
+  top:180px;
+  
+
 }
 
 .App-footer {
   border-top: 3px solid #E0354B;
   position: absolute;
+  top: 700px;
   bottom: 0%;
   width: 99%;
   font-style: italic;
