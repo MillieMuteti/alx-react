@@ -4,28 +4,28 @@ import WithLogging from "./WithLogging";
 
 const TestComponent = () => <p>Test Component</p>;
 
-describe("WithLogging component tests", () => {
-  it("supposed to call console.log on mount and dismount", () => {
+describe("WithLogging tests", () => {
+  it("should call console.log on mount and dismount", () => {
     const spy = jest.spyOn(console, "log").mockImplementation();
     const NewComponent = WithLogging(TestComponent);
-    const test = shallow(<NewComponent />);
+    const wrapper = shallow(<NewComponent />);
 
     expect(spy).toBeCalledTimes(1);
-    test.unmount();
+    wrapper.unmount();
     expect(spy).toBeCalledTimes(2);
     spy.mockRestore();
   });
 
-  it("supposed to log out the correct message on mount and on unmount", () => {
+  it("should log out the right message on mount and on unmount", () => {
     const spy = jest.spyOn(console, "log").mockImplementation();
     const NewComponent = WithLogging(TestComponent);
-    const test = shallow(<NewComponent />);
+    const wrapper = shallow(<NewComponent />);
 
     expect(spy).toBeCalledTimes(1);
     expect(spy).toBeCalledWith("Component TestComponent is mounted");
-    test.unmount();
+    wrapper.unmount();
     expect(spy).toHaveBeenCalledTimes(2);
-    expect(spy).toBeCalledWith("Component Test is going to unmount");
+    expect(spy).toBeCalledWith("Component TestComponent is going to unmount");
     spy.mockRestore();
   });
 });
