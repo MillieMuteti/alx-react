@@ -1,111 +1,124 @@
-import { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
-import Login from '../Login/Login';
-import CourseList from '../CourseList/CourseList';
-import Notifications from '../Notifications/Notifications';
-import { getLatestNotification } from '../utils/utils';
 import React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 import BodySection from '../BodySection/BodySection';
-import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom'
-import {StyleSheet, css} from "aphrodite"
+import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
+import Notifications from '../Notifications/Notifications';
+import Login from '../Login/Login';
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
+import CourseList from '../CourseList/CourseList';
+import PropTypes from 'prop-types';
+import { getLatestNotification } from '../utils/utils';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.isLoggedIn = props.isLoggedIn;
-    this.logOut = props.logOut;
-    this.state = {
-      displayDrawer: false
-    }
-    this.handleBtn = this.handleBtn.bind(this)
-    this.handledisplayDrawer = this.handledisplayDrawer.bind(this)
-    this.handleHideDrawer = this.handleHideDrawer.bind(this)
+	constructor(props) {
+		super(props);
 
-    this.listCourses = [
-      {id: 1, name: 'ES6', credit: 60},
-      {id: 2, name: 'Webpack', credit: 20},
-      {id: 3, name: 'React', credit: 40},
-    ];
-  
-    this.listNotifications = [
-      {id: 1, value: "New course available", type: "default"},
-      {id: 2, value: "New resume available", type: "urgent"},
-      {id: 3, html: getLatestNotification(), type: "urgent"},
-    ];
-  }
+		this.state = { displayDrawer: false };
 
+		this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
+		this.handleHideDrawer = this.handleHideDrawer.bind(this);
+	}
 
-  handledisplayDrawer() {
-    this.setState({
-      displayDrawer: true
-    })
-  }
+	listCourses = [
+		{ id: 1, name: 'ES6', credit: 60 },
+		{ id: 2, name: 'Webpack', credit: 20 },
+		{ id: 3, name: 'React', credit: 40 },
+	];
 
-  handleHideDrawer() {
-    this.setState({
-      displayDrawer: false
-    })
-  }
-  
-  handleBtn(h) {
-    if (h.ctrlKey && h.key === "h") {
-      alert("Logging you out");
-      this.props.logOut();
-    }
-  }
+	listNotifications = [
+		{ id: 1, type: 'default', value: 'New course available' },
+		{ id: 2, type: 'urgent', value: 'New resume available' },
+		{ id: 3, type: 'default', html: getLatestNotification() },
+	];
 
-  componentDidMount() {
-    document.addEventListener("keydown", this.handleBtn)
-  }
+	componentDidMount() {
+		document.addEventListener('keydown', (e) => {
+			if (e.ctrlKey && e.key === 'h') {
+				alert('Logging you out');
+				this.props.logOut();
+			}
+		});
+	}
 
-  componentWillUnmount() {
-    document.removeEventListener("keydown", this.handleBtn)
-  }
+	componentWillUnmount() {
+		document.removeEventListener('keydown', (e) => {
+			if (e.ctrlKey && e.key === 'h') {
+				alert('Logging you out');
+				this.props.logOut();
+			}
+		});
+	}
 
-  render() {
-    return (
-      <Fragment>
-            <Notifications listNotifications={this.listNotifications} />
-      <div className={css(bodyStyles.App)}>
-        <Header />
-        {this.props.isLoggedIn ?
-        <BodySectionWithMarginBottom title="Course List">
-          <CourseList listCourses={this.listCourses} />
-        </BodySectionWithMarginBottom>  
-        : (
-        <BodySectionWithMarginBottom title="Log in to continue">
-            <Login />
-        </BodySectionWithMarginBottom>
-        )}
-        <BodySection title="News from the School">
-          <p>In today's school news, the principal announced that the annual talent show will take place next month and encouraged students to sign up for auditions. The school's robotics team also brought home first place in a regional competition, and their victory was celebrated with a pizza party. In other news, the art club is hosting a fundraiser to raise money for new supplies, and the drama club is putting on a production of Romeo and Juliet this weekend. Finally, the school's debate team is preparing for an upcoming tournament and has been practicing vigorously after school.</p>
-        </BodySection>
-        <Footer />
-      </div>
-      </Fragment>
-    );
-  }
+	handleDisplayDrawer() {
+		this.setState({ displayDrawer: true });
+	}
+
+	handleHideDrawer() {
+		this.setState({ displayDrawer: false });
+	}
+
+	render() {
+		return (
+			<>
+				<div className={css(styles.container, styles.small)}>
+					<Header />
+					<Notifications
+						listNotifications={this.listNotifications}
+						displayDrawer={this.state.displayDrawer}
+						handleDisplayDrawer={this.handleDisplayDrawer}
+						handleHideDrawer={this.handleHideDrawer}
+					/>
+				</div>
+				<hr className={css(styles.hr)} />
+				{this.props.isLoggedIn ? (
+					<BodySectionWithMarginBottom>
+						<CourseList listCourses={this.listCourses} />
+					</BodySectionWithMarginBottom>
+				) : (
+					<BodySectionWithMarginBottom>
+						<Login />
+					</BodySectionWithMarginBottom>
+				)}
+				<BodySection title='News from the School'>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+						eiusmod tempor incididunt ut labore et dolore magna aliqua.{' '}
+					</p>
+				</BodySection>
+				<hr className={css(styles.hr)} />
+				<Footer />
+			</>
+		);
+	}
 }
 
-const bodyStyles= StyleSheet.create({
-  App: {
-    position: 'relative',
-    minHeight: '100vh',
-  }
-})
+App.propTypes = {
+	isLoggedIn: PropTypes.bool,
+	logOut: PropTypes.func,
+};
 
 App.defaultProps = {
-  isLoggedIn: false,
-  logOut: () => {
-    return;
-  },
+	isLoggedIn: false,
+	logOut: () => {
+		return;
+	},
 };
 
-App.propTypes = {
-  isLoggedIn: PropTypes.bool,
-  logOut: PropTypes.func,
-};
+const styles = StyleSheet.create({
+	container: {
+		display: 'flex',
+		justifyContent: 'space-between',
+	},
+	hr: {
+		borderTop: '2px solid red',
+	},
+	small: {
+		'@media (max-width: 900px)': {
+			display: 'grid',
+			justifyContent: 'center',
+		},
+	},
+});
 
 export default App;

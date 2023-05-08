@@ -1,19 +1,26 @@
-import './BodySection'
-import React from 'react'
-import { shallow } from 'enzyme'
+import React from 'react';
+import { StyleSheetTestUtils } from 'aphrodite';
+import { shallow } from 'enzyme';
+import BodySection from './BodySection';
 
-
-describe("Body section tests", () =>{
-    it("Renders correctly", () =>{
-        const test = shallow (
-            <BodySection title="test title">
-                <p>test children node</p>
-            </BodySection>
-        )
-    })
-    expect(test.exists()).toBe(true);
-    expect(test.exists("h2")).toBe(true);
-    expect(test.find("h2").html()).toEqual("<h2>test title</h2>");
-    expect(test.exists("p")).toBe(true);
-    expect(test.find("p").text()).toEqual("test children node");
+beforeEach(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
 });
+
+afterEach(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
+
+describe('<BodySection />', () => {
+  it('renders an <h2> element and children', () => {
+    const wrapper = shallow(
+      <BodySection title="test title">
+        <p>test children node</p>
+      </BodySection>);
+
+    expect(wrapper.find('h2')).toHaveLength(1);
+    expect(wrapper.find('h2').text()).toBe('test title');
+    expect(wrapper.find('p')).toHaveLength(1);
+    expect(wrapper.find('p').text()).toBe('test children node');
+  });
+})
