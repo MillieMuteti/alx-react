@@ -1,45 +1,37 @@
-import React from 'react';
-import { StyleSheetTestUtils } from 'aphrodite';
-import NotificationItem from './NotificationItem';
 import { shallow } from 'enzyme';
+import NotificationItem from './NotificationItem';
 
-beforeEach(() => {
-  StyleSheetTestUtils.suppressStyleInjection();
+describe('NotificationItem Component Tests', () => {
+    let notificationItem;
+
+    it('NotificationItem renders without crashing', () => {
+        notificationItem = shallow(<NotificationItem />);
+        expect(notificationItem).toBeDefined();
+    });
+
+    it('Passing type and value props to NotificationItem works as expected', () => {
+        notificationItem = shallow(
+            <NotificationItem type='default' value='test' />
+        );
+        expect(notificationItem.find('li').text()).toBe('test');
+        expect(notificationItem.find('li').props('data-notification-type')).toBe('default')
+    })
+
+    it('Passing a dummy html prop renders the correct html', () => {
+        notificationItem = shallow(<NotificationItem html={{ __html: '<u>test</u>' }} />);
+        expect(notificationItem.find('li').props().dangerouslySetInnerHTML.__html).toBe('test');
+    })
 });
 
-afterEach(() => {
-  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-});
-
-describe('rendering components', () => {
-  it('renders NotificationItem component without crashing', () => {
-    const wrapper = shallow(<NotificationItem />);
-
-    expect(wrapper.exists()).toBe(true);
+describe("onclick event behaves as it should", () => {
+    it("should call console.log", () => {
+      const wrapper = shallow(<NotificationItem />);
+      const spy = jest.fn();
+  
+      wrapper.setProps({ value: "test item", markAsRead: spy, id: 1 });
+      wrapper.find("li").props().onClick();
+      expect(spy).toBeCalledTimes(1);
+      expect(spy).toBeCalledWith(1);
+      spy.mockRestore();
+    });
   });
-
-  it('renders correct html from type="default" value="test" props', () => {
-    const wrapper = shallow(<NotificationItem />);
-
-    wrapper.setProps({ type: 'default', value: 'test' })
-    expect(wrapper.html()).toEqual('<li data-notification-type=\"default\" class=\"default_peoly4\">test</li>');
-  });
-
-  it('renders correct html from  html="<u>test</u>" props', () => {
-    const wrapper = shallow(<NotificationItem />);
-
-    wrapper.setProps({ html: '<u>test</u>' })
-    expect(wrapper.html()).toEqual('<li data-urgent=\"true\" class=\"urgent_5sww4x\"><u>test</u></li>');
-  })
-
-  it('checks component onClick spy is called with correct ID argument', () => {
-    const wrapper = shallow(<NotificationItem />);
-    const spy = jest.fn();
-
-    wrapper.setProps({ value: 'test', markAsRead: spy, id: 99 })
-    wrapper.find('li').props().onClick();
-    expect(spy).toBeCalledTimes(1);
-    expect(spy).toBeCalledWith(99);
-    spy.mockRestore();
-  })
-});

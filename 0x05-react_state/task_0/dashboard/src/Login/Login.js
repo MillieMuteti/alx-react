@@ -1,47 +1,38 @@
-import React from 'react';
-import { StyleSheet, css } from 'aphrodite';
+import {StyleSheet, css} from 'aphrodite';
 
-const Login = () => {
-  return (
-    <>
-      <div className={css(styles.appBody, styles.small)}>
-        <h1>Log in to continue</h1>
-        <p>Login to access the full dashboard</p>
-        <label htmlFor="email">Email: </label>
-        <input className={css(styles.noBorder)} type="email" id="email" name="email" />
-        <label htmlFor="password">Password: </label>
-        <input className={css(styles.noBorder)} type="password" id="password" name="password" />
-        <button className={css(styles.yellowBorder)}>OK</button>
-      </div>
-    </>
-  );
+function Login(props) {
+    return (
+        <div className={css(LoginStyles.LoginBody)}>
+            <p>
+                Login to access the full dashboard
+            </p>
+            <form className={css(LoginStyles.LoginForm)}>
+                <label htmlFor='email'>Email: </label>
+                <input type='email' id='email' name='email' />
+                <label htmlFor='password'>Password: </label>
+                <input type='password' id='password' name='password' />
+                <button>OK</button>
+            </form>
+        </div>
+    )
 }
 
-const styles = StyleSheet.create({
-  appBody: {
-    minHeight: '50vh',
-    textAlign: 'left',
-    marginTop: '2rem',
-    marginLeft: '2rem',
-  },
-  small: {
-    '@media (max-width: 900px)': {
-      display: 'grid',
-      justifyContent: 'center',
-    }
-  },
-  noBorder: {
-    '@media (max-width: 900px)': {
-      border: 'none'
-    }
-  },
-  yellowBorder: {
-    '@media (max-width: 900px)': {
-      border: '2px solid gold',
-      backgroundColor: 'transparent',
-      width: '5vw'
-    }
-  }
+const LoginStyles = StyleSheet.create({
+    LoginBody: {
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '1.2rem 0 0 2.5rem',
+        justifyContent: 'center',
+        
+    },
+    LoginForm: {
+        display: 'flex',
+        gap: '.6rem',
+        "@media(max-width: 900px)" : {
+            display: 'flex',
+            flexDirection: 'column',
+        },
+    },
 })
 
 export default Login;
