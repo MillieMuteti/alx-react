@@ -1,7 +1,8 @@
-const { fromJS } = require('immutable');
+import { fromJS } from './node_modules/immutable/dist/immutable';
 
-function getImmutableObject(obj) {
-  return fromJS(obj);
+export default function getImmutableObject(object) {
+  return fromJS(object);
 }
+
 
 
